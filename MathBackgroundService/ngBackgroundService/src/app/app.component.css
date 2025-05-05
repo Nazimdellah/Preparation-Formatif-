@@ -1,0 +1,17 @@
+.borderedZone{
+  border-color: black;
+  border-radius: 1px;
+  border-style: solid;
+  margin:8px;
+  padding: 8px;
+  font-size: large;
+}
+
+.loginZone{
+  margin: 4px;
+  height: 70px;
+}
+
+button{
+  margin:4px;
+}
