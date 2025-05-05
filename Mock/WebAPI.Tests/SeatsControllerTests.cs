@@ -48,5 +48,37 @@ public class SeatsControllerTests
 
 
     }
+    [TestMethod]
+    public void Unauthorized()
+    {
+        var SeatService = new Mock<SeatsService>();
+        Mock<SeatsController> SeatContoller = new Mock<SeatsController>(SeatService.Object) { CallBase = true };
+        SeatContoller.Setup(u => u.UserId).Returns("2");
+        var seat = new Seat();
+        SeatService.Setup(s => s.ReserveSeat(SeatContoller.Object.UserId, It.IsAny<int>())).Throws(new SeatAlreadyTakenException());
+        var actionResult = SeatContoller.Object.ReserveSeat(seat.Number);
+        var result = actionResult.Result as UnauthorizedResult;
+        Assert.IsNotNull(result);
+
+
+
+
+    }
+    [TestMethod]
+    public void BadRequest()
+    {
+        var SeatService = new Mock<SeatsService>();
+        Mock<SeatsController> SeatContoller = new Mock<SeatsController>(SeatService.Object) { CallBase = true };
+        SeatContoller.Setup(u => u.UserId).Returns("2");
+        var seat = new Seat();
+        SeatService.Setup(s => s.ReserveSeat(SeatContoller.Object.UserId, It.IsAny<int>())).Throws(new UserAlreadySeatedException());
+        var actionResult = SeatContoller.Object.ReserveSeat(seat.Number);
+        var result = actionResult.Result as BadRequestResult;
+        Assert.IsNotNull(result);
+
+
+
+
+    }
 
 }
