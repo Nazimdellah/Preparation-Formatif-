@@ -25,10 +25,16 @@ namespace BackgroundService.Hubs
             _game.AddUser(Context.UserIdentifier!);
 
             Player player = _backgroundServiceContext.Player.Where(p => p.UserId == Context.UserIdentifier!).Single();
+            
 
             await Clients.Caller.SendAsync("GameInfo", new GameInfoDTO()
             {
                 // TODO: Remplir l'information avec les 2 nouveaux features (nbWins et multiplierCost)
+
+
+                NbWins = player.NbWins,
+                MultiplierCost = Game.MULTIPLIER_BASE_PRICE
+
             });
         }
 
