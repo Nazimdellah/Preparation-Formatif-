@@ -50,5 +50,9 @@ namespace BackgroundService.Hubs
         }
 
         // Ajouter une méthode pour pouvoir acheter un multiplier
+        public void BuyMultiplier()
+        {
+            _game.ajoutMulticiplitateur(Context.UserIdentifier!);
+        }
     }
 }
