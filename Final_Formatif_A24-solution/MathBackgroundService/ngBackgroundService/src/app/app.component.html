@@ -1,0 +1,47 @@
+<div style="width:400px" class="container">
+  <form class="borderedZone">
+    <div class="loginZone" *ngIf="!isLoggedIn()">
+      <mat-form-field  style="width: 100%;">
+        <mat-label>Nom d'usager</mat-label>
+        <input matInput type="text" [(ngModel)]="account.username" name="username"/>
+      </mat-form-field>
+    </div>
+    <div class="loginZone" *ngIf="isLoggedIn()">
+      <div style="padding-top: 24px;">Bonjour <b>{{account.username}}!</b></div>
+    </div>
+    <div *ngIf="!isLoggedIn()">
+      <button mat-raised-button color="primary" (click)="register()">Enregistrer</button>
+      <button mat-raised-button color="accent" (click)="login()">Login</button>
+    </div>
+    <div *ngIf="isLoggedIn()">
+      <button mat-raised-button color="accent" (click)="logout()">Logout</button>
+    </div>
+  </form>
+
+  <div class="borderedZone" *ngIf="isLoggedIn()" style="margin-top: 32px; height: 260px">
+    <div *ngIf="!isConnected">
+      <div >Pas connecté au Hub..</div>
+      <br>
+      <div>
+        <button mat-raised-button color="primary" (click)="connectToHub()">Connecter au Hub</button>
+      </div>
+    </div>
+    <div *ngIf="isConnected && currentQuestion">
+      <div >Connecté! Vous avez eu <b>{{nbRightAnswers}}</b> bonnes réponses!</div>
+      <br>
+      <div>
+        Combien font: {{currentQuestion.valueA}}
+        <span *ngIf="currentQuestion.operation == 0"> + </span>
+        <span *ngIf="currentQuestion.operation == 1"> - </span>
+        <span *ngIf="currentQuestion.operation == 2"> * </span>
+        {{currentQuestion.valueB}} ?
+      </div>
+      <div style="margin-top: 15px">
+        <div *ngFor="let answer of currentQuestion.answers; index as i">
+          <button [style]="selection == i?'background-color:dodgerblue;':''" [disabled]="selection >= 0" mat-raised-button color="primary" color="accent" style="margin: 10px" matBadge={{currentQuestion.playerChoices[i]}} (click)="SelectChoice(i)">{{answer}}</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
