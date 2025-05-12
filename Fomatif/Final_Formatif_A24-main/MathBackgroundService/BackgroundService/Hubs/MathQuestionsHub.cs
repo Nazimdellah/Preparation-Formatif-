@@ -4,6 +4,7 @@ using BackgroundServiceVote.Models;
 using BackgroundServiceVote.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Identity.Client;
 
 namespace BackgroundServiceVote.Hubs
 {
@@ -12,11 +13,13 @@ namespace BackgroundServiceVote.Hubs
     {
         private MathBackgroundService _matchBackgroundService;
         private BackgroundServiceContext _backgroundServiceContext;
+        public int CptAnswer;
 
         public MathQuestionsHub(MathBackgroundService matchBackgroundService, BackgroundServiceContext backgroundServiceContext)
         {
             _matchBackgroundService = matchBackgroundService;
             _backgroundServiceContext = backgroundServiceContext;
+            
         }
 
         public override async Task OnConnectedAsync()
@@ -41,9 +44,14 @@ namespace BackgroundServiceVote.Hubs
             await base.OnDisconnectedAsync(exception);
         }
 
-        public void SelectChoice(int asnwerIndex)
+        public async void SelectChoice(int asnwerIndex)
         {
             _matchBackgroundService.SelectChoice(Context.UserIdentifier!, asnwerIndex);
+            CptAnswer++;
+
+
+           
+            await Clients.All.SendAsync("IncreasePlayersChoices",CptAnswer);
         }
     }
 }

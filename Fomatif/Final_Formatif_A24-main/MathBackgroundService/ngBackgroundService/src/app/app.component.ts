@@ -107,6 +107,7 @@ export class AppComponent {
       this.zone.run(() => {
         if(this.currentQuestion){
           this.currentQuestion.playerChoices[choiceIndex]++;
+          console.log(choiceIndex)
         }
       });
     });
